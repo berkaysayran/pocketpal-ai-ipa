@@ -18,6 +18,11 @@ workflows:
     scripts:
       - name: Install JS dependencies
         script: yarn install
+      - name: Create env files the Xcode project expects
+        script: |
+          cp .env.example .env
+          mkdir -p ios/Config
+          touch ios/Config/Env.xcconfig
       - name: Install CocoaPods
         script: cd ios && pod install
       - name: Set up keychain
