@@ -23,6 +23,8 @@ workflows:
           cp .env.example .env
           mkdir -p ios/Config
           touch ios/Config/Env.xcconfig
+      - name: Download Metal toolchain (needed for llama.rn Metal kernels)
+        script: xcodebuild -downloadComponent MetalToolchain
       - name: Install CocoaPods
         script: cd ios && pod install
       - name: Set up keychain
