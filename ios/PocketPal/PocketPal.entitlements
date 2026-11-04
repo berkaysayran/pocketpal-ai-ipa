@@ -2,45 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!--
-		Keychain Access Groups: Required for Supabase authentication session persistence
-
-		This entitlement allows the app to store and retrieve authentication tokens
-		securely in the iOS Keychain. Without this, Supabase sessions won't persist
-		across app restarts, requiring users to sign in every time they open the app.
-	-->
+	<!-- Keychain access group: change to YOUR bundle ID (must match PRODUCT_BUNDLE_IDENTIFIER) -->
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)ai.pocketpal</string>
+		<string>$(AppIdentifierPrefix)com.berkaysayran.pocketpalai</string>
 	</array>
 
-	<!--
-		Siri: Required for App Intents and Shortcuts integration
-
-		This entitlement allows the app to provide App Intents that can be invoked
-		through Siri voice commands and the Shortcuts app.
-	-->
+	<!-- Siri / App Intents / Shortcuts -->
 	<key>com.apple.developer.siri</key>
 	<true/>
 
-	<!--
-		Increased Memory Limit: Required for loading large language models
-
-		This entitlement raises the per-process jetsam threshold, allowing the app
-		to use more memory before iOS terminates it.
-	-->
+	<!-- Increased Memory Limit -->
 	<key>com.apple.developer.kernel.increased-memory-limit</key>
 	<true/>
 
-	<!--
-		Extended Virtual Addressing: Required for memory-mapping large model files
-
-		Allows the app to address a larger virtual memory range, enabling mmap of
-		large GGUF model files without running into virtual address limits.
-	-->
+	<!-- Extended Virtual Addressing -->
 	<key>com.apple.developer.kernel.extended-virtual-addressing</key>
 	<true/>
 
+	<!-- Sign in with Apple -->
 	<key>com.apple.developer.applesignin</key>
 	<array>
 		<string>Default</string>
