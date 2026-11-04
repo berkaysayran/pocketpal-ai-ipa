@@ -4,7 +4,7 @@ workflows:
     instance_type: mac_mini_m2
     max_build_duration: 120
     integrations:
-      app_store_connect: pocketpalai      # name of the key in Codemagic Team integrations
+      app_store_connect: pocketpalai                   # name of the key in Codemagic Team integrations
     environment:
       groups:
         - certificate_credentials               # contains CERTIFICATE_PRIVATE_KEY (secure variable)
@@ -23,6 +23,40 @@ workflows:
           cp .env.example .env
           mkdir -p ios/Config
           touch ios/Config/Env.xcconfig
+      - name: Create placeholder GoogleService-Info.plist (Firebase config is not in the repo)
+        script: |
+          cat > ios/GoogleService-Info.plist << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>API_KEY</key>
+            <string>AIzaSyDUMMYDUMMYDUMMYDUMMYDUMMYDUMMY000</string>
+            <key>GCM_SENDER_ID</key>
+            <string>123456789012</string>
+            <key>PLIST_VERSION</key>
+            <string>1</string>
+            <key>BUNDLE_ID</key>
+            <string>$BUNDLE_ID</string>
+            <key>PROJECT_ID</key>
+            <string>pocketpal-placeholder</string>
+            <key>STORAGE_BUCKET</key>
+            <string>pocketpal-placeholder.appspot.com</string>
+            <key>IS_ADS_ENABLED</key>
+            <false/>
+            <key>IS_ANALYTICS_ENABLED</key>
+            <false/>
+            <key>IS_APPINVITE_ENABLED</key>
+            <false/>
+            <key>IS_GCM_ENABLED</key>
+            <false/>
+            <key>IS_SIGNIN_ENABLED</key>
+            <false/>
+            <key>GOOGLE_APP_ID</key>
+            <string>1:123456789012:ios:0123456789abcdef01234567</string>
+          </dict>
+          </plist>
+          EOF
       - name: Download Metal toolchain (needed for llama.rn Metal kernels)
         script: xcodebuild -downloadComponent MetalToolchain
       - name: Install CocoaPods
