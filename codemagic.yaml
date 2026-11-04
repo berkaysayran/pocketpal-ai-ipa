@@ -6,20 +6,26 @@ workflows:
     integrations:
       app_store_connect: pocketpalai      # name of the key in Codemagic Team integrations
     environment:
+      groups:
+        - certificate_credentials               # contains CERTIFICATE_PRIVATE_KEY (secure variable)
       node: 22.21.0                             # pinned in the repo's .nvmrc
       xcode: latest
       cocoapods: default
       vars:
-        XCODE_WORKSPACE: PocketPal.xcworkspace  # verify in the ios/ folder
-        XCODE_SCHEME: PocketPal                 # verify in Xcode scheme list
-      ios_signing:
-        distribution_type: development
-        bundle_identifier: com.berkaysayran.pocketpalai   # must match PRODUCT_BUNDLE_IDENTIFIER
+        BUNDLE_ID: com.berkaysayran.pocketpalai
+        XCODE_WORKSPACE: PocketPal.xcworkspace
+        XCODE_SCHEME: PocketPal
     scripts:
       - name: Install JS dependencies
         script: yarn install
       - name: Install CocoaPods
         script: cd ios && pod install
+      - name: Set up keychain
+        script: keychain initialize
+      - name: Fetch or create signing files
+        script: app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_DEVELOPMENT --create
+      - name: Add certificates to keychain
+        script: keychain add-certificates
       - name: Apply signing profiles to Xcode project
         script: xcode-project use-profiles
       - name: Build IPA
