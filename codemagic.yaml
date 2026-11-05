@@ -15,6 +15,8 @@ workflows:
         BUNDLE_ID: com.berkaysayran.pocketpalai
         XCODE_WORKSPACE: PocketPal.xcworkspace
         XCODE_SCHEME: PocketPal
+        NODE_OPTIONS: "--max-old-space-size=4096"      # fixes "JavaScript heap out of memory" in the JS bundle step
+        EXTRA_PACKAGER_ARGS: "--max-workers=2"         # fewer Metro workers = less memory, avoids SIGTERM kills
     scripts:
       - name: Install JS dependencies
         script: yarn install
